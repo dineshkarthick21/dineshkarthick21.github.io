@@ -3,6 +3,8 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 
 const Contact = () => {
   const ref = useRef(null);
+  const recipientEmail = 'ssdineshkarthick@gmail.com';
+  const formFrameName = 'contact-form-target';
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"]
@@ -10,6 +12,43 @@ const Contact = () => {
   
   // Parallax translation for the big text
   const y = useTransform(scrollYProgress, [0, 1], ["-20%", "30%"]);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const firstName = String(formData.get('firstName') || '').trim();
+    const permission = formData.get('permission') === 'on';
+
+    if (!permission) {
+      window.alert('Please allow contact permission before sending the form.');
+      return;
+    }
+
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalButtonText = submitButton?.textContent;
+
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = 'Sending...';
+    }
+
+    form.action = `https://formsubmit.co/${recipientEmail}`;
+    form.method = 'POST';
+    form.target = formFrameName;
+
+    window.alert('Message is being sent.');
+    form.submit();
+    form.reset();
+
+    window.setTimeout(() => {
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = originalButtonText || 'Send';
+      }
+    }, 1000);
+  };
 
   return (
     <section ref={ref} id="contact" className="bg-[#0a0a0a] w-full min-h-screen relative overflow-hidden flex items-end pt-32 pb-0 md:pb-0 border-t border-gray-900">
@@ -36,7 +75,7 @@ const Contact = () => {
             Reach Us
           </div>
 
-          <form className="flex flex-col gap-12 md:gap-16 w-full">
+          <form className="flex flex-col gap-12 md:gap-16 w-full" onSubmit={handleSubmit}>
             <div className="flex flex-col md:flex-row gap-12 md:gap-20 w-full">
               {/* Left Column */}
               <div className="flex-1 flex flex-col gap-10">
@@ -44,6 +83,7 @@ const Contact = () => {
                   <input 
                     type="text" 
                     id="firstName" 
+                    name="firstName"
                     placeholder="First Name" 
                     className="w-full bg-transparent border-b border-white/40 pb-3 text-lg focus:outline-none focus:border-white transition-colors placeholder-white font-medium rounded-none"
                   />
@@ -52,6 +92,7 @@ const Contact = () => {
                   <input 
                     type="text" 
                     id="lastName" 
+                    name="lastName"
                     placeholder="Last Name" 
                     className="w-full bg-transparent border-b border-white/40 pb-3 text-lg focus:outline-none focus:border-white transition-colors placeholder-white font-medium rounded-none"
                   />
@@ -60,6 +101,7 @@ const Contact = () => {
                   <input 
                     type="email" 
                     id="email" 
+                    name="email"
                     placeholder="Email" 
                     className="w-full bg-transparent border-b border-white/40 pb-3 text-lg focus:outline-none focus:border-white transition-colors placeholder-white font-medium rounded-none"
                   />
@@ -71,6 +113,7 @@ const Contact = () => {
                 <div className="relative h-full flex flex-col">
                   <textarea 
                     id="message" 
+                    name="message"
                     placeholder="Type your message here" 
                     className="w-full h-full min-h-[120px] bg-transparent border-b border-white/40 pb-3 text-lg focus:outline-none focus:border-white transition-colors placeholder-white font-medium resize-none rounded-none"
                   ></textarea>
@@ -85,6 +128,8 @@ const Contact = () => {
                 <input 
                   type="checkbox" 
                   id="permission" 
+                  name="permission"
+                  value="on"
                   className="mt-1 w-4 h-4 rounded-sm border-white/40 bg-transparent text-white focus:ring-white focus:ring-offset-0 focus:ring-offset-transparent cursor-pointer" 
                   style={{ accentColor: "white" }}
                 />
@@ -116,6 +161,7 @@ const Contact = () => {
               </div>
             </div>
           </form>
+          <iframe name={formFrameName} title="contact-form-target" className="hidden" aria-hidden="true" tabIndex="-1" />
 
         </div>
       </div>

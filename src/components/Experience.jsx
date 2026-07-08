@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import kidney from '../assets/about/kidney-im.png';
 
 const experienceData = [
   {
@@ -23,9 +24,9 @@ const experienceData = [
         title: 'Chronic Kidney Disease Prediction System',
         description: 'Developed an AI-powered disease prediction system using machine learning to identify Chronic Kidney Disease at an early stage through an interactive web application with intelligent clinical assistance.',
         metric: 'Achieved 77% accuracy in CKD prediction. ⭐',
-        image: 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=600&h=400&fit=crop',
+        image: kidney,
         tags: ['Python', 'Scikit-learn', 'LangChain', 'FastAPI', 'Docker', 'Random Forest','RAG','LLM','Pandas','NumPy','Azure'],
-        github: 'https://github.com',
+        github: 'https://github.com/dineshkarthick21/Chronic-kidney-disease-prediction',
         live: 'https://example.com',
         color: 'from-blue-500 to-cyan-500',
       }

@@ -39,7 +39,23 @@ const About = () => {
             </div>
           </div>
 
+              <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-5">
+  <div className="flex items-center gap-3">
+    <span className="text-2xl">📍</span>
+    <div>
+      <p className="text-sm text-gray-300 uppercase tracking-wider">
+        Location
+      </p>
+      <p className="text-lg font-semibold text-white">
+        Salem,TamilNadu India
+      </p>
+    </div>
+  </div>
+  </div>
+
         </div>
+
+    
 
         {/* Right Side: Info Content */}
         <div data-aos="fade-left" data-aos-delay="200" className="flex-1 text-white mt-8 md:mt-0 relative z-20">
@@ -52,8 +68,13 @@ const About = () => {
           {/* Horizontal Skills Row (Transparent & Large) */}
           <div className="relative border-l border-gray-700 ml-5 pl-10 pb-10">
 
+              {/* Personal Information */}
+
+
   {/* Timeline Dot */}
   <div className="absolute -left-[10px] top-2 w-5 h-5 rounded-full bg-indigo-500 border-4 border-[#0f172a]" />
+
+
 
   {/* Year */}
   <span className="text-indigo-500 font-semibold text-xl">

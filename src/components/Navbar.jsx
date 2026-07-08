@@ -17,7 +17,7 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = ['Home', 'About', 'Skills','Experience', 'Projects', 'Contact'];
+  const navLinks = ['Home', 'About', 'Skills','Experience', 'Projects','Certifications', 'Contact'];
 
   return (
     <nav 
@@ -43,7 +43,7 @@ const Navbar = () => {
           {navLinks.map((link) => (
             <a 
               key={link} 
-              href={`#${link.toLowerCase()}`}
+              href={`#${link.toLowerCase().replace(/\s+/g, '-')}`}
               className="text-white/80 hover:text-white font-medium relative group transition-colors duration-300"
             >
               {link}
@@ -90,7 +90,7 @@ const Navbar = () => {
           {navLinks.map((link) => (
             <a 
               key={link} 
-              href={`#${link.toLowerCase()}`}
+              href={`#${link.toLowerCase().replace(/\s+/g, '-')}`}
               onClick={() => setIsOpen(false)}
               className="text-white hover:text-black font-bold text-lg border-b border-white/20 pb-2 transition-colors"
             >

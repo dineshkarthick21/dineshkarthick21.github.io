@@ -38,15 +38,20 @@ const Hero = () => {
     id="home"
     className="relative w-full h-screen overflow-hidden bg-[#e32614]">
       {/* Background Video */}
-      <video
-        ref={videoRef}
-        loop
-        muted={isMuted}
-        playsInline
-className="absolute inset-0 w-full h-full object-cover z-0"
-        style={{
-    objectPosition: "50% 30%",
-  }}>
+     <video
+  ref={videoRef}
+  muted={isMuted}
+  playsInline
+  className="absolute inset-0 w-full h-full object-cover z-0"
+  style={{ objectPosition: "50% 30%" }}
+  onEnded={() => {
+    setIsPlaying(false);
+
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0; // Return to the beginning
+    }
+  }}
+>
         <source src={heroVideo} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
@@ -90,7 +95,7 @@ className="absolute inset-0 w-full h-full object-cover z-0"
             data-aos-delay="200"
             className="text-white text-sm md:text-lg font-semibold mb-8 max-w-md drop-shadow-md"
           >
-            I build fast, scalable and modern web applications using React, Node.js and Tailwind CSS.
+            I build intelligent, scalable, and modern web applications using AI, React, Node.js, and modern cloud technologies.
           </p>
 
           {/* Buttons */}
@@ -100,14 +105,19 @@ className="absolute inset-0 w-full h-full object-cover z-0"
             className="flex flex-row flex-wrap items-center gap-3 w-full"
           >
             {/* Primary Button */}
-            <button className="px-4 py-2 md:px-6 md:py-2 text-xs md:text-base rounded-full bg-white text-black font-semibold hover:bg-gray-200 transition-all duration-300 transform hover:scale-105 shadow-md">
-              View My Work
-            </button>
-            
-            {/* Secondary Button - Glassmorphism style */}
-            <button className="px-4 py-2 md:px-6 md:py-2 text-xs md:text-base rounded-full bg-black/40 border border-white text-white font-semibold hover:bg-black/60 transition-all duration-300 backdrop-blur-md">
-              Contact Me
-            </button>
+          <a
+  href="#projects"
+  className="px-4 py-2 md:px-6 md:py-2 text-xs md:text-base rounded-full bg-white text-black font-semibold hover:bg-gray-200 transition-all duration-300 transform hover:scale-105 shadow-md"
+>
+  View My Work
+</a>
+
+<a
+  href="#contact"
+  className="px-4 py-2 md:px-6 md:py-2 text-xs md:text-base rounded-full bg-black/40 border border-white text-white font-semibold hover:bg-black/60 transition-all duration-300 backdrop-blur-md"
+>
+  Contact Me
+</a>
           </div>
         </div>
 

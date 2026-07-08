@@ -7,44 +7,46 @@ const Footer = () => {
       {/* Top Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 w-full font-medium">
         <div className="flex flex-col gap-1">
-          <p>Cinematic & Creative Production</p>
-          <p>Lighting, Editing, Photo</p>
-          <p>Motion Graphics</p>
+          <p>AI/ML & Full Stack Developer</p>
+
+<p>Building intelligent web applications,
+machine learning solutions, and
+modern digital experiences.</p>
         </div>
         
         <div className="flex flex-col gap-1 md:items-center">
-          <p>5+ years of experience</p>
-          <a href="#work" className="underline hover:text-white transition-colors mt-1 underline-offset-4 decoration-1">View Work</a>
+          <p>Open to Opportunities</p>
+          <a href="#projects" className="underline hover:text-white transition-colors mt-1 underline-offset-4 decoration-1">View Work</a>
         </div>
         
         <div className="flex flex-col gap-1 md:items-end">
-          <p>Worldwide Available</p>
+          <p>Get In Touch</p>
           <p>{new Date().getFullYear()}</p>
         </div>
       </div>
 
-      {/* Middle Huge Text */}
       <div className="w-full flex justify-center items-center py-20 md:py-24 overflow-hidden">
-        <h2 className="text-[18vw] md:text-[16vw] leading-none font-sans font-bold tracking-tighter lowercase select-none text-[#f4f4f4] w-full text-center">
-          DK
-        </h2>
-      </div>
+  <h2 className="text-[18vw] md:text-[16vw] leading-none font-sans font-bold tracking-tighter select-none text-[#f4f4f4] w-full text-center">
+    DK.dev
+  </h2>
+</div>
 
       {/* Bottom Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 w-full items-end font-medium">
         <div className="flex flex-col gap-6">
           <a href="#contact" className="underline hover:text-white transition-colors underline-offset-4 decoration-1 font-bold">Contact</a>
           <p className="text-white/60 font-mono text-[9px] md:text-[10px]">
-            &copy; {new Date().getFullYear()} Leeshark Studio | Built with React
+            &copy; {new Date().getFullYear()} DineshKarthick All rights reserved.<p> PH : 7200769655</p>
+<p>Built with React & Tailwind CSS</p>
           </p>
         </div>
         
         <div className="flex flex-col gap-1 md:items-center">
-          <a href="mailto:hello@leeshark.com" className="underline hover:text-white transition-colors underline-offset-4 decoration-1 lowercase">hello@leeshark.com</a>
+          <a href="mailto:ssdineshkarthick@gmail.com" className="underline hover:text-white transition-colors underline-offset-4 decoration-1 lowercase">ssdineshkarthick@gmail.com</a>
         </div>
         
         <div className="flex flex-col gap-1 md:items-end">
-          <a href="#" className="underline hover:text-white transition-colors underline-offset-4 decoration-1">Privacy Policy</a>
+          <a href="https://github.com/dineshkarthick21" className="underline hover:text-white transition-colors underline-offset-4 decoration-1">Github</a>
         </div>
       </div>
     </footer>
