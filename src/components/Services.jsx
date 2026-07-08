@@ -10,7 +10,6 @@ const TagCard = ({ number, title, text, className, aosDelay, aosType, pathLength
     
     const cardRect = ref.current.getBoundingClientRect();
     const containerRect = containerRef.current.getBoundingClientRect();
-    
     const cardTopRelativeToContainer = cardRect.top - containerRect.top;
     const containerHeight = containerRect.height;
     
@@ -73,7 +72,7 @@ const Services = () => {
 
   return (
     <section 
-      id="services"
+      
       ref={containerRef}
       className="bg-white pt-24 pb-32 px-6 md:px-12 w-full relative overflow-hidden font-sans bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:80px_80px]"
     >
@@ -85,7 +84,7 @@ const Services = () => {
             How we work
           </div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-[1.1] mb-6 tracking-tight relative">
-            Let us show you how we drive your brand to new heights
+            Turning ideas into scalable digital solutions
             {/* Hand-drawn arrow */}
             <svg className="absolute -bottom-10 right-10 w-12 h-12 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" className="hidden" />
@@ -93,8 +92,7 @@ const Services = () => {
             </svg>
           </h2>
           <p className="text-gray-500 text-base md:text-lg max-w-sm font-medium leading-relaxed">
-            We follow a structured, creative, and highly technical approach to turn your ideas into robust full-stack applications.
-          </p>
+I build responsive web applications, AI-powered solutions, and cloud-ready systems using modern technologies and industry best practices.          </p>
         </div>
 
         {/* Desktop SVG Animated Dashed Line */}
@@ -175,8 +173,8 @@ const Services = () => {
           
           <TagCard 
             number="01"
-            title="Define"
-            text="We start by understanding your goals, user requirements, and technical constraints to lay a rock-solid foundation for the project."
+            title="Plan"
+            text="Understanding project requirements, defining objectives, and selecting the right technologies to build efficient and scalable solutions."
             className="md:absolute md:top-[10px] md:right-[5%] lg:right-[10%] rotate-2 md:rotate-6"
             aosType="fade-left"
             aosDelay="100"
@@ -187,7 +185,7 @@ const Services = () => {
           <TagCard 
             number="02"
             title="Design"
-            text="Creating intuitive, pixel-perfect user interfaces and wireframes that guarantee an engaging and accessible user experience."
+            text="Creating responsive, intuitive, and visually appealing user interfaces that deliver seamless and engaging user experiences."
             className="md:absolute md:top-[450px] md:left-[5%] lg:left-[10%] -rotate-2 md:-rotate-6"
             aosType="fade-right"
             aosDelay="200"
@@ -197,8 +195,8 @@ const Services = () => {
 
           <TagCard 
             number="03"
-            title="Build"
-            text="Developing scalable frontend architectures and secure backend systems using the latest modern tech stack."
+            title="Develop"
+            text="Building scalable full-stack applications with modern frontend technologies, secure backend systems, and AI-powered features."
             className="md:absolute md:top-[700px] md:right-[5%] lg:right-[15%] rotate-1 md:rotate-3"
             aosType="fade-left"
             aosDelay="300"
@@ -208,8 +206,8 @@ const Services = () => {
 
           <TagCard 
             number="04"
-            title="Launch"
-            text="Rigorous testing, optimization, and seamless deployment to cloud infrastructure, followed by ongoing support."
+            title="Deploy"
+            text="Deploying cloud-ready applications, optimizing performance, and ensuring secure, scalable, and reliable production environments."
             className="md:absolute md:top-[1050px] md:left-[15%] lg:left-[25%] -rotate-1 md:-rotate-3"
             aosType="fade-right"
             aosDelay="400"

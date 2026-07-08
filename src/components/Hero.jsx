@@ -3,6 +3,8 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 // Adjusted import path for the video
 import heroVideo from '../assets/hero video/Developer_introduces_self_and_sk…_202606051918.mp4';
+import { TypeAnimation } from "react-type-animation";
+
 
 const Hero = () => {
   const videoRef = useRef(null);
@@ -32,15 +34,19 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative w-full h-screen overflow-hidden bg-black">
+    <section 
+    id="home"
+    className="relative w-full h-screen overflow-hidden bg-[#e32614]">
       {/* Background Video */}
       <video
         ref={videoRef}
         loop
         muted={isMuted}
         playsInline
-        className="absolute top-0 left-0 w-full h-full object-cover z-0"
-      >
+className="absolute inset-0 w-full h-full object-cover z-0"
+        style={{
+    objectPosition: "50% 30%",
+  }}>
         <source src={heroVideo} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
@@ -51,12 +57,32 @@ const Hero = () => {
         {/* Left Side: Text and Buttons */}
         <div className="flex flex-col items-start text-left max-w-2xl w-full">
           {/* Main Heading */}
-          <h1 
-            data-aos="fade-up"
-            className="text-white text-3xl md:text-5xl font-bold mb-4 tracking-tight"
-          >
-            Hi, I’m a <br /> <span className="text-transparent [-webkit-text-stroke:1.5px_black]">Full Stack Developer</span>
-          </h1>
+          <h1
+  data-aos="fade-up"
+  className="text-white text-3xl md:text-5xl font-bold mb-4 tracking-tight"
+>
+  Hi, I'm a <br />
+
+  <span className="text-transparent [-webkit-text-stroke:1.5px_black]">
+    <TypeAnimation
+      sequence={[
+        "AI Engineer",
+        2000,
+        "Full Stack Developer",
+        2000,
+        "Freelancer",
+        2000,
+        "ML Engineer",
+        2000,
+        
+        
+      ]}
+      wrapper="span"
+      speed={50}
+      repeat={Infinity}
+    />
+  </span>
+</h1>
 
           {/* Subheading */}
           <p 

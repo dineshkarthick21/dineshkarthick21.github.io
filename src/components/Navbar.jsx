@@ -17,7 +17,7 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = ['Home', 'About', 'Skills', 'Projects', 'Contact'];
+  const navLinks = ['Home', 'About', 'Skills','Experience', 'Projects', 'Contact'];
 
   return (
     <nav 
@@ -31,10 +31,10 @@ const Navbar = () => {
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
         
-        {/* Left Side: Logo/Name */}
+        {/* Left Side: Logo/Name */}  
         <div className="flex items-center">
           <a href="#" className="text-white text-2xl font-black tracking-tight">
-            Leeshark<span className="text-red-500">.</span>
+            DK<span className="text-red-500">.</span>
           </a>
         </div>
 

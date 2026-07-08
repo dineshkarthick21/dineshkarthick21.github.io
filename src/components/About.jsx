@@ -3,10 +3,14 @@ import stackImage from '../assets/about/image.png';
 import reactImage from '../assets/about/react.png';
 import nodeImage from '../assets/about/node.png';
 import mongoImage from '../assets/about/mongodb.png';
+import pythonImage from '../assets/about/python.png';
+import langchainImage from '../assets/about/langchain.png';
+import tensorflowImage from '../assets/about/tensorflow.png';
+import scikitImage from '../assets/about/scikit-learn.png';
 
 const About = () => {
   return (
-    <section className="bg-[#ff2a2a] pt-20 pb-40 px-6 md:px-12 w-full relative overflow-hidden font-sans">
+    <section id="about" className="bg-[#ff2a2a] pt-20 pb-40 px-6 md:px-12 w-full relative overflow-hidden font-sans">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-16 items-start">
         
         {/* Left Side: ID Badge and Skills */}
@@ -42,30 +46,31 @@ const About = () => {
           
           <h2 className="text-4xl md:text-5xl font-black text-black mb-4">Hello!</h2>
           <p className="text-lg font-bold mb-12 leading-relaxed max-w-3xl text-red-50">
-            Hi, my name is <span className="text-black text-xl font-black mx-1 tracking-wide uppercase">Leeshark</span>, a passionate full-stack developer based in [Location], dedicated to crafting clean, functional, and highly scalable web applications.
+            Hi, <span className="text-black text-xl font-black mx-1 tracking-wide uppercase">I'M DineshkarthicK</span> an AI & Full Stack Developer passionate about building intelligent, high-performance web applications. I enjoy combining AI, modern web technologies, and creative design to solve real-world problems.
           </p>
 
           {/* Horizontal Skills Row (Transparent & Large) */}
-          <div className="flex items-center gap-10 mt-8">
-            <img 
-              data-aos="zoom-in" data-aos-delay="300"
-              src={reactImage} 
-              alt="React" 
-              className="w-20 h-20 md:w-24 md:h-24 object-contain hover:scale-110 transition-transform duration-300 cursor-pointer drop-shadow-2xl" 
-            />
-            <img 
-              data-aos="zoom-in" data-aos-delay="450"
-              src={nodeImage} 
-              alt="Node.js" 
-              className="w-20 h-20 md:w-24 md:h-24 object-contain hover:scale-110 transition-transform duration-300 cursor-pointer drop-shadow-2xl" 
-            />
-            <img 
-              data-aos="zoom-in" data-aos-delay="600"
-              src={mongoImage} 
-              alt="MongoDB" 
-              className="w-20 h-20 md:w-24 md:h-24 object-contain hover:scale-110 transition-transform duration-300 cursor-pointer drop-shadow-2xl" 
-            />
-          </div>
+          <div className="relative border-l border-gray-700 ml-5 pl-10 pb-10">
+
+  {/* Timeline Dot */}
+  <div className="absolute -left-[10px] top-2 w-5 h-5 rounded-full bg-indigo-500 border-4 border-[#0f172a]" />
+
+  {/* Year */}
+  <span className="text-indigo-500 font-semibold text-xl">
+    2022 - 2026
+  </span>
+
+  {/* Degree */}
+  <h3 className="text-4xl font-bold text-white mt-2 leading-snug">
+    B.Tech in Computer Science and Business Systems
+  </h3>
+
+  {/* College */}
+  <p className="text-gray-400 text-2xl mt-2">
+    K.S. Rangasamy College of Technology, Tiruchengode
+  </p>
+
+</div>
 
         </div>
       </div>
