@@ -1,5 +1,7 @@
 node_modules/
 dist/
+.vite/
+.eslintcache
 .env
 .env.local
 .env.development.local
