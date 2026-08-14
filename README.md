@@ -49,3 +49,7 @@ npm run preview
 
 - The contact form sends messages through EmailJS and requires the three environment variables above.
 - Generated output in `dist/` is ignored by git.
+
+Regards
+
+Dineshkarthick.
