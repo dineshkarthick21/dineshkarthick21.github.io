@@ -1,10 +1,9 @@
-import React, { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 const Contact = () => {
   const ref = useRef(null);
-  const recipientEmail = 'ssdineshkarthick@gmail.com';
-  const formFrameName = 'contact-form-target';
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"]
@@ -13,41 +12,76 @@ const Contact = () => {
   // Parallax translation for the big text
   const y = useTransform(scrollYProgress, [0, 1], ["-20%", "30%"]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const form = event.currentTarget;
     const formData = new FormData(form);
     const firstName = String(formData.get('firstName') || '').trim();
+    const lastName = String(formData.get('lastName') || '').trim();
+    const email = String(formData.get('email') || '').trim();
+    const message = String(formData.get('message') || '').trim();
     const permission = formData.get('permission') === 'on';
+
+    if (!firstName) {
+      window.alert('Please enter your first name.');
+      return;
+    }
+
+    if (!lastName) {
+      window.alert('Please enter your last name.');
+      return;
+    }
+
+    if (!email) {
+      window.alert('Please enter your email address.');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      window.alert('Please enter a valid email address.');
+      return;
+    }
+
+    if (!message) {
+      window.alert('Please enter your message.');
+      return;
+    }
 
     if (!permission) {
       window.alert('Please allow contact permission before sending the form.');
       return;
     }
 
-    const submitButton = form.querySelector('button[type="submit"]');
-    const originalButtonText = submitButton?.textContent;
+    setIsSubmitting(true);
 
-    if (submitButton) {
-      submitButton.disabled = true;
-      submitButton.textContent = 'Sending...';
-    }
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          email,
+          message,
+        }),
+      });
 
-    form.action = `https://formsubmit.co/${recipientEmail}`;
-    form.method = 'POST';
-    form.target = formFrameName;
-
-    window.alert('Message is being sent.');
-    form.submit();
-    form.reset();
-
-    window.setTimeout(() => {
-      if (submitButton) {
-        submitButton.disabled = false;
-        submitButton.textContent = originalButtonText || 'Send';
+      if (!response.ok) {
+        throw new Error('Failed to send message');
       }
-    }, 1000);
+
+      window.alert('Thank you! Your message has been sent successfully. A confirmation email has also been sent to you.');
+      form.reset();
+    } catch (error) {
+      console.error('Contact submission error:', error);
+      window.alert('Sorry, your message could not be sent. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -150,18 +184,22 @@ const Contact = () => {
                   
                   <button 
                     type="submit" 
-                    className="px-8 py-3 rounded-full border border-white/40 text-white font-bold flex items-center justify-center gap-3 hover:bg-white hover:text-[#ff2a2a] transition-all duration-300 group whitespace-nowrap self-start sm:self-auto"
+                    disabled={isSubmitting}
+                    className={`px-8 py-3 rounded-full border border-white/40 text-white font-bold flex items-center justify-center gap-3 transition-all duration-300 group whitespace-nowrap self-start sm:self-auto ${
+                      isSubmitting ? 'opacity-60 cursor-not-allowed' : 'hover:bg-white hover:text-[#ff2a2a]'
+                    }`}
                   >
-                    Send
-                    <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                    </svg>
+                    {isSubmitting ? 'Sending...' : 'Send'}
+                    {!isSubmitting && (
+                      <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      </svg>
+                    )}
                   </button>
                 </div>
               </div>
             </div>
           </form>
-          <iframe name={formFrameName} title="contact-form-target" className="hidden" aria-hidden="true" tabIndex="-1" />
 
         </div>
       </div>
