@@ -54,13 +54,17 @@ const Contact = () => {
       return;
     }
 
+    if (isSubmitting) {
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
+      const response = await fetch("https://dineshkarthick21-vercel-io.vercel.app/api/contact", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           firstName,
@@ -70,8 +74,10 @@ const Contact = () => {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to send message');
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok || (data && data.success === false)) {
+        throw new Error((data && data.message) || 'Failed to send message');
       }
 
       window.alert('Thank you! Your message has been sent successfully. A confirmation email has also been sent to you.');

@@ -11,45 +11,80 @@ function escapeHtml(str) {
 }
 
 export default async function handler(req, res) {
-  // CORS configuration
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  // Configure CORS specifically for production custom domain and development
+  const origin = req.headers.origin;
+  const allowedOrigins = [
+    'https://dineshkarthick.me',
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://127.0.0.1:5173',
+  ];
+
+  if (origin && allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  } else {
+    res.setHeader('Access-Control-Allow-Origin', 'https://dineshkarthick.me');
+  }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
+  // Handle OPTIONS preflight request
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
+  // Enforce POST method only
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method Not Allowed' });
-  }
-
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    console.error('Server error: RESEND_API_KEY is not configured');
-    return res.status(500).json({ error: 'Email service not configured' });
+    return res.status(405).json({
+      success: false,
+      message: 'Method Not Allowed',
+    });
   }
 
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
     const { firstName, lastName, email, message } = body;
 
-    // Server-side validation
+    // Field validation
     if (!firstName || typeof firstName !== 'string' || !firstName.trim()) {
-      return res.status(400).json({ error: 'First name is required' });
+      return res.status(400).json({
+        success: false,
+        message: 'First name is required.',
+      });
     }
     if (!lastName || typeof lastName !== 'string' || !lastName.trim()) {
-      return res.status(400).json({ error: 'Last name is required' });
+      return res.status(400).json({
+        success: false,
+        message: 'Last name is required.',
+      });
     }
     if (!email || typeof email !== 'string' || !email.trim()) {
-      return res.status(400).json({ error: 'Email is required' });
+      return res.status(400).json({
+        success: false,
+        message: 'Email is required.',
+      });
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email.trim())) {
-      return res.status(400).json({ error: 'A valid email address is required' });
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid email address.',
+      });
     }
     if (!message || typeof message !== 'string' || !message.trim()) {
-      return res.status(400).json({ error: 'Message is required' });
+      return res.status(400).json({
+        success: false,
+        message: 'Message is required.',
+      });
+    }
+
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      console.error('Server configuration error: RESEND_API_KEY is not set');
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to send email.',
+      });
     }
 
     const cleanFirstName = firstName.trim();
@@ -64,13 +99,14 @@ export default async function handler(req, res) {
 
     const resend = new Resend(apiKey);
 
-    // 1. Email to Dinesh (Portfolio Owner)
-    const emailToOwner = resend.emails.send({
+    // Email 1 — Send Contact Message to Portfolio Owner
+    const adminResult = await resend.emails.send({
       from: 'Dineshkarthick <Thankyou@dineshkarthick.me>',
       to: ['ssdineshkarthick@gmail.com'],
       replyTo: cleanEmail,
+      reply_to: cleanEmail,
       subject: `New Portfolio Contact - ${cleanFirstName} ${cleanLastName}`,
-      text: `New Portfolio Contact\n\nFirst Name: ${cleanFirstName}\n\nLast Name: ${cleanLastName}\n\nEmail: ${cleanEmail}\n\nMessage:\n\n${cleanMessage}`,
+      text: `New Portfolio Contact\n\nFirst Name: ${cleanFirstName}\nLast Name: ${cleanLastName}\nEmail: ${cleanEmail}\n\nMessage:\n${cleanMessage}`,
       html: `
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; color: #111; line-height: 1.6;">
           <h2 style="color: #ff2a2a; border-bottom: 2px solid #eee; padding-bottom: 12px; margin-bottom: 24px;">New Portfolio Contact</h2>
@@ -88,8 +124,16 @@ export default async function handler(req, res) {
       `,
     });
 
-    // 2. Thank you email to Visitor
-    const emailToVisitor = resend.emails.send({
+    if (adminResult.error) {
+      console.error('Resend error sending to owner:', adminResult.error.message || adminResult.error);
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to send email.',
+      });
+    }
+
+    // Email 2 — Confirmation to Visitor
+    const visitorResult = await resend.emails.send({
       from: 'Dineshkarthick <Thankyou@dineshkarthick.me>',
       to: [cleanEmail],
       subject: 'Thank You for Contacting Me',
@@ -110,24 +154,23 @@ export default async function handler(req, res) {
       `,
     });
 
-    const [adminResult, visitorResult] = await Promise.all([emailToOwner, emailToVisitor]);
-
-    if (adminResult.error) {
-      console.error('Resend error sending to owner:', adminResult.error.message || adminResult.error);
-      return res.status(500).json({ error: 'Failed to send notification email' });
-    }
-
     if (visitorResult.error) {
       console.error('Resend error sending to visitor:', visitorResult.error.message || visitorResult.error);
-      return res.status(500).json({ error: 'Failed to send confirmation email' });
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to send confirmation email.',
+      });
     }
 
     return res.status(200).json({
       success: true,
-      message: 'Thank you! Your message has been sent successfully. A confirmation email has also been sent to you.',
+      message: 'Emails sent successfully.',
     });
   } catch (error) {
     console.error('Error processing contact request:', error.message || error);
-    return res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to send email.',
+    });
   }
 }
