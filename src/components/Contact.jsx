@@ -1,9 +1,10 @@
 import { useRef, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
 
 const Contact = () => {
   const ref = useRef(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [popup, setPopup] = useState(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"]
@@ -24,33 +25,57 @@ const Contact = () => {
     const permission = formData.get('permission') === 'on';
 
     if (!firstName) {
-      window.alert('Please enter your first name.');
+      setPopup({
+        type: 'warning',
+        title: 'First Name Required',
+        message: 'Please enter your first name.',
+      });
       return;
     }
 
     if (!lastName) {
-      window.alert('Please enter your last name.');
+      setPopup({
+        type: 'warning',
+        title: 'Last Name Required',
+        message: 'Please enter your last name.',
+      });
       return;
     }
 
     if (!email) {
-      window.alert('Please enter your email address.');
+      setPopup({
+        type: 'warning',
+        title: 'Email Required',
+        message: 'Please enter your email address.',
+      });
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      window.alert('Please enter a valid email address.');
+      setPopup({
+        type: 'warning',
+        title: 'Invalid Email',
+        message: 'Please enter a valid email address.',
+      });
       return;
     }
 
     if (!message) {
-      window.alert('Please enter your message.');
+      setPopup({
+        type: 'warning',
+        title: 'Message Required',
+        message: 'Please enter your message.',
+      });
       return;
     }
 
     if (!permission) {
-      window.alert('Please allow contact permission before sending the form.');
+      setPopup({
+        type: 'warning',
+        title: 'Permission Required',
+        message: 'Please allow contact permission before sending the form.',
+      });
       return;
     }
 
@@ -80,11 +105,19 @@ const Contact = () => {
         throw new Error((data && data.message) || 'Failed to send message');
       }
 
-      window.alert('Thank you! Your message has been sent successfully. A confirmation email has also been sent to you.');
+      setPopup({
+        type: 'success',
+        title: 'Thank you for contacting me 😊',
+        message: 'Your message has been sent successfully. A confirmation email has also been sent to you.',
+      });
       form.reset();
     } catch (error) {
       console.error('Contact submission error:', error);
-      window.alert('Sorry, your message could not be sent. Please try again later.');
+      setPopup({
+        type: 'error',
+        title: 'Sending Failed',
+        message: 'Sorry, your message could not be sent. Please try again later.',
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -209,6 +242,70 @@ const Contact = () => {
 
         </div>
       </div>
+
+      {/* Custom In-Page Modal */}
+      <AnimatePresence>
+        {popup && (
+          <div 
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+            onClick={() => setPopup(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-md bg-[#121212] border border-white/10 rounded-3xl p-8 shadow-2xl text-center flex flex-col items-center overflow-hidden"
+            >
+              {/* Top Accent Line */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#ff2a2a] via-[#ff5252] to-[#ff2a2a]" />
+
+              {/* Close Button */}
+              <button
+                type="button"
+                onClick={() => setPopup(null)}
+                className="absolute top-4 right-4 text-white/50 hover:text-white transition-colors p-1.5 rounded-full hover:bg-white/10 cursor-pointer"
+                aria-label="Close"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+
+              {/* Icon / Emoji */}
+              <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-5 text-3xl shadow-lg ${
+                popup.type === 'success' 
+                  ? 'bg-[#ff2a2a]/15 border border-[#ff2a2a]/40 shadow-[#ff2a2a]/20' 
+                  : popup.type === 'error'
+                  ? 'bg-red-500/15 border border-red-500/40 shadow-red-500/20'
+                  : 'bg-amber-500/15 border border-amber-500/40 shadow-amber-500/20'
+              }`}>
+                {popup.type === 'success' ? '😊' : popup.type === 'error' ? '⚠️' : 'ℹ️'}
+              </div>
+
+              {/* Title */}
+              <h3 className="text-xl md:text-2xl font-bold text-white mb-2.5 tracking-tight">
+                {popup.title}
+              </h3>
+
+              {/* Description */}
+              <p className="text-sm md:text-base text-white/70 leading-relaxed mb-6 max-w-xs">
+                {popup.message}
+              </p>
+
+              {/* Action Button */}
+              <button
+                type="button"
+                onClick={() => setPopup(null)}
+                className="w-full py-3.5 px-6 rounded-full bg-[#ff2a2a] hover:bg-[#e02424] text-white font-bold text-sm tracking-wide transition-all duration-300 shadow-lg shadow-[#ff2a2a]/30 hover:shadow-[#ff2a2a]/50 cursor-pointer active:scale-98"
+              >
+                OK
+              </button>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
