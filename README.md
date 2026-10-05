@@ -1,6 +1,6 @@
 # 🎬 Video Portfolio
 
-A modern, interactive portfolio website built with React and Vite, featuring a hero video reel, dynamic project showcase, professional certifications, technical skills, and a functional contact form.
+A modern, interactive portfolio website built with React and Vite, featuring a hero video reel, dynamic project showcase, professional certifications, technical skills, and a functional contact form backed by a serverless API (Resend).
 
 ## ✨ Features
 
@@ -11,7 +11,7 @@ A modern, interactive portfolio website built with React and Vite, featuring a h
 - **Experience** - Work history and career timeline
 - **Projects** - Showcase of completed projects with details
 - **Certifications** - Display of professional certifications
-- **Contact Form** - Fully functional contact form with EmailJS integration
+- **Contact Form** - Validated form that posts to a Vercel serverless function, which emails the owner and sends an auto-reply to the visitor via Resend
 - **Responsive Design** - Optimized for all screen sizes
 - **Smooth Animations** - Enhanced UX with Framer Motion and AOS effects
 - **Preloader** - Professional loading animation
@@ -25,12 +25,15 @@ A modern, interactive portfolio website built with React and Vite, featuring a h
 | **Tailwind CSS 4** | Styling & Utility CSS |
 | **Framer Motion** | Advanced Animations |
 | **AOS** | Scroll Animation Library |
-| **EmailJS** | Email Service Integration |
+| **Resend** | Transactional Email (serverless `api/contact.js`) |
+| **Vercel** | Serverless API hosting |
 
 ## 📁 Project Structure
 
 ```
-My-Portfolio/
+dineshkarthick21.github.io/
+├── api/
+│   └── contact.js        # Serverless contact handler (Resend)
 ├── src/
 │   ├── components/
 │   │   ├── About.jsx
@@ -53,8 +56,11 @@ My-Portfolio/
 │   ├── main.jsx
 │   └── index.css
 ├── public/
+├── .github/workflows/deploy.yml
+├── .env.example
 ├── index.html
 ├── package.json
+├── vercel.json
 ├── vite.config.js
 ├── eslint.config.js
 └── README.md
@@ -71,7 +77,7 @@ My-Portfolio/
 1. **Clone the repository:**
 ```bash
 git clone <repository-url>
-cd My-Portfolio
+cd dineshkarthick21.github.io
 ```
 
 2. **Install dependencies:**
@@ -80,20 +86,18 @@ npm install
 ```
 
 3. **Set up environment variables:**
-Create a `.env` file in the project root:
+Copy `.env.example` to `.env` in the project root:
 ```env
-VITE_EMAILJS_SERVICE_ID=your_emailjs_service_id
-VITE_EMAILJS_TEMPLATE_ID=your_emailjs_template_id
-VITE_EMAILJS_PUBLIC_KEY=your_emailjs_public_key
+RESEND_API_KEY=re_your_api_key_here
 ```
 
-> Get these credentials from [EmailJS](https://www.emailjs.com/)
+> Get an API key from [Resend](https://resend.com/). The key is read server-side only (never prefixed with `VITE_`).
 
 4. **Start the development server:**
 ```bash
 npm run dev
 ```
-The site will be available at `http://localhost:5173`
+The site will be available at `http://localhost:5173`. The Vite dev server also serves `/api/contact` locally (see `vite.config.js`).
 
 ## 📦 Available Scripts
 
@@ -143,20 +147,18 @@ npm run lint
 
 ### Contact
 - Fully functional contact form
-- Email integration via EmailJS
+- Email delivery via Resend (owner notification + visitor confirmation)
 - Form validation and feedback
 
 ## ⚙️ Configuration
 
-### EmailJS Setup
+### Contact API (Resend) Setup
 
-1. Create an account on [EmailJS](https://www.emailjs.com/)
-2. Create an email service and template
-3. Copy your credentials:
-   - Service ID
-   - Template ID
-   - Public Key
-4. Add these to your `.env` file
+1. Create an account on [Resend](https://resend.com/) and verify your sending domain
+2. Create an API key
+3. Add it as `RESEND_API_KEY` in `.env` locally and in your Vercel project environment variables
+4. Update the sender, recipient, and allowed CORS origins in `api/contact.js`
+5. Make sure the `fetch` URL in `src/components/Contact.jsx` points to your deployed API
 
 ### Customization
 
@@ -172,14 +174,15 @@ npm run lint
 npm run build
 ```
 
-### Deploy to GitHub Pages, Vercel, or Netlify
-- Push `dist/` folder to your hosting service
-- GitHub Pages: Use GitHub Actions or manual deployment
-- Vercel/Netlify: Connect your repository for auto-deployment
+### Hosting
+- **Frontend** - GitHub Pages via GitHub Actions (`.github/workflows/deploy.yml`), served on the custom domain in `CNAME`
+- **Contact API** - Deploy to Vercel; `vercel.json` rewrites `/api/*` to the serverless functions and everything else to `index.html`
+- Set `RESEND_API_KEY` in Vercel project settings
 
 ## 📝 Notes
 
-- The contact form requires proper EmailJS configuration to send emails
+- The contact form requires a valid `RESEND_API_KEY` and a verified Resend domain to send emails
+- Never commit `.env`; only `.env.example` is tracked
 - All assets should be optimized for web (compressed images/videos)
 - The `dist/` folder is excluded from git as per `.gitignore`
 - Preloader displays before main content loads
