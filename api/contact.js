@@ -147,7 +147,6 @@ export default async function handler(req, res) {
           <p>Thank you again for getting in touch. I look forward to connecting with you.</p>
           <div style="margin-top: 32px; border-top: 1px solid #eee; padding-top: 16px;">
             <p style="margin: 0; font-weight: bold; color: #111;">Dineshkarthick</p>
-            <p style="margin: 2px 0 8px 0; color: #666; font-size: 14px;">Computer Science &amp; Business Systems</p>
             <p style="margin: 0;"><a href="https://dineshkarthick.me" style="color: #ff2a2a; text-decoration: none; font-weight: 500;">dineshkarthick.me</a></p>
           </div>
         </div>
